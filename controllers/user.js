@@ -3,8 +3,10 @@ const bcrypt = require('bcrypt');
 
 const User = require('../models/user');
 const Post = require('../models/post');
+const Comment = require('../models/comment');
 
 
+// Get profile info || posts || comments || likes
 exports.getUserProfile = async (req, res, next) => {
 
     try {
@@ -19,7 +21,7 @@ exports.getUserProfile = async (req, res, next) => {
         const post = await Post.find({author : user._id}).limit(3).sort({_id : -1}).populate('author', 'username');
         if(!post) {
 
-            const error = new Error('Sorry, the requested user could not be found.');
+            const error = new Error('Sorry, the requested post could not be found.');
             error.statusCode = 404;
             throw error;
         }
@@ -38,6 +40,7 @@ exports.getUserProfile = async (req, res, next) => {
 }
 
 
+// all posts user uploaded || post liked || post commented
 exports.userActivity = async (req, res, next) => {
 
     try {
@@ -63,6 +66,7 @@ exports.userActivity = async (req, res, next) => {
 }
 
 
+// update only password
 exports.updatePassword = async (req, res, next) => {
 
     try {
@@ -111,6 +115,7 @@ exports.updatePassword = async (req, res, next) => {
 }
 
 
+// update all user info like email username
 exports.updateProfile = async (req, res, next) => {
 
     try {
@@ -155,6 +160,7 @@ exports.updateProfile = async (req, res, next) => {
 }
 
 
+// create a new post for blog
 exports.createPost = async (req, res, next) => {
 
     try {

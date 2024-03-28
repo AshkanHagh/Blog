@@ -8,6 +8,7 @@ const path = require('path');
 
 const authRouter = require('./routes/auth');
 const userRouter = require('./routes/user');
+const postRouter = require('./routes/post');
 
 const app = express();
 
@@ -48,6 +49,7 @@ app.use(upload.single('image'));
 
 app.use('/api/auth', authRouter);
 app.use('/api/user', userRouter);
+app.use('/api/blog', postRouter);
 
 
 app.use((error, req, res, next) => {

@@ -67,7 +67,7 @@ exports.login = async (req, res, next) => {
             throw error;
         }
 
-        const {email, password} = req.body;
+        const { email, password } = req.body;
 
         const user = await User.findOne({email});
         if(!user) {

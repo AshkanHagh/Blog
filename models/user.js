@@ -29,7 +29,11 @@ const userSchema = new Schema({
     profilePic: {
         type: String,
         default: "",
-    }
+    },
+    posts : [{
+        type : Schema.Types.ObjectId,
+        ref : 'Post'
+    }]
 
 }, {timestamps : true});
 

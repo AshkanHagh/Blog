@@ -12,5 +12,9 @@ router.get('/:id', postController.getSinglePost);
 
 router.post('/comment/:id', body('comment').trim().notEmpty(), isAuth, postController.addNewComment);
 
+router.put('/like/:id', isAuth, postController.likePost);
+
+router.put('/dislike/:id', isAuth, postController.dislike);
+
 
 module.exports = router;

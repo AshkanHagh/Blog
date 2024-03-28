@@ -108,3 +108,71 @@ exports.addNewComment = async (req, res, next) => {
     }
 
 }
+
+
+exports.likePost = async (req, res, next) => {
+
+    try {
+        const post = await Post.findByIdAndUpdate(req.params.id, {
+            $push : {
+                likeId : req.userId
+            },
+            new : true
+        });
+
+        await post.save();
+
+        const user = await User.findByIdAndUpdate(req.userId, {
+            $push : {
+                likedPosts : post._id
+            }
+        });
+
+        await user.save();
+
+        res.status(201).json({message : 'Post liked', postId : post._id});
+
+    } catch (error) {
+
+        if(!error.statusCode) {
+
+            error.statusCode = 500;
+        }
+        next(error);
+    }
+
+}
+
+
+exports.dislike = async (req, res, next) => {
+
+    try {
+        const post = await Post.findByIdAndUpdate(req.params.id, {
+            $pull : {
+                likeId : req.userId
+            },
+            new : true
+        });
+
+        await post.save();
+
+        const user = await User.findByIdAndUpdate(req.userId, {
+            $pull : {
+                likedPosts : post._id
+            }
+        });
+
+        await user.save();
+
+        res.status(201).json({message : 'Post disliked', postId : post._id});
+
+    } catch (error) {
+        
+        if(!error.statusCode) {
+
+            error.statusCode = 500;
+        }
+        next(error);
+    }
+
+}

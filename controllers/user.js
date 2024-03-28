@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt');
 
 const User = require('../models/user');
 const Post = require('../models/post');
-const Comment = require('../models/comment');
+// const Comment = require('../models/comment');
 
 
 // Get profile info || posts || comments || likes
@@ -18,7 +18,7 @@ exports.getUserProfile = async (req, res, next) => {
             throw error;
         }
 
-        const post = await Post.find({author : user._id}).limit(3).sort({_id : -1}).populate('author', 'username');
+        const post = await Post.find({author : user._id}).limit(3).sort({_id : -1}).populate('author', 'username').populate('commentId', 'comment');
         if(!post) {
 
             const error = new Error('Sorry, the requested post could not be found.');
@@ -44,7 +44,7 @@ exports.getUserProfile = async (req, res, next) => {
 exports.userActivity = async (req, res, next) => {
 
     try {
-        const user = await User.findById(req.userId).populate(['posts']);
+        const user = await User.findById(req.userId).sort({_id : -1}).populate('posts').populate('comments');
         if(!user) {
 
             const error = new Error('Sorry, the requested user could not be found.');
@@ -52,7 +52,7 @@ exports.userActivity = async (req, res, next) => {
             throw error;
         }
 
-        res.status(200).json({message : 'Activity loaded successfully!', posts : user.posts});
+        res.status(200).json({message : 'Activity loaded successfully!', posts : user.posts, comments : user.comments});
 
     } catch (error) {
         

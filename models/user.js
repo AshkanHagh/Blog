@@ -37,6 +37,10 @@ const userSchema = new Schema({
     comments : [{
         type : Schema.Types.ObjectId,
         ref : 'Comment' 
+    }],
+    likedPosts : [{
+        type : Schema.Types.ObjectId,
+        ref : 'Post'
     }]
 
 }, {timestamps : true});

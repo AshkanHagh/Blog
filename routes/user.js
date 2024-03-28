@@ -21,7 +21,7 @@ body('description').trim().isLength({max : 255}).notEmpty()], isAuth, userContro
 
 
 
-router.put('/comment/:id', isAuth, commentController.editComment);
+router.put('/comment/:id', body('comment').trim().notEmpty(), isAuth, commentController.editComment);
 
 router.delete('/comment/:id', isAuth, commentController.deleteComment);
 

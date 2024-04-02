@@ -4,7 +4,6 @@ const router = require('express').Router();
 const isAuth = require('../middlewares/verify-token');
 
 const userController = require('../controllers/user');
-const commentController = require('../controllers/comment');
 
 
 router.get('/profile', isAuth, userController.getUserProfile);
@@ -18,13 +17,10 @@ router.put('/settings/password', [body('password').trim().isLength({min : 6}).no
 router.post('/post', [body('title').trim().isLength({min : 7}).notEmpty(), body('info').trim().notEmpty(), 
 body('description').trim().isLength({max : 255}).notEmpty()], isAuth, userController.createPost);
 
+router.put('/post/:id', [body('title').trim().isLength({min : 7}).notEmpty(), body('info').trim().notEmpty(), 
+body('description').trim().isLength({max : 255}).notEmpty()], isAuth, userController.editPost);
 
-
-
-router.put('/comment/:id', body('comment').trim().notEmpty(), isAuth, commentController.editComment);
-
-router.delete('/comment/:id', isAuth, commentController.deleteComment);
-
+router.delete('/post/:id', isAuth, userController.deletePost);
 
 
 module.exports = router;

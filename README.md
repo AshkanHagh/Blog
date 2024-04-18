@@ -1,6 +1,6 @@
 # A Blog REST API With [Node](https://nodejs.org/), [Express](https://expressjs.com/), [MongoDB](https://www.mongodb.com/)
 
-<img src="blog.png" max-width="100%"/>
+<img src="image/blog.png" max-width="100%"/>
 
 Features :
 

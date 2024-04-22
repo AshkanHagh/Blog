@@ -1,10 +1,14 @@
 import { Router } from 'express';
 import protectRoute from '../middlewares/protectRoute';
-import { updatePost } from '../controller/publish.controller';
+import { deletePost, updatePost, whoIsLiked } from '../controller/publish.controller';
 
 const router = Router();
 
-router.put('/update/:id', protectRoute, updatePost);
+router.put('/:id', protectRoute, updatePost);
+
+router.delete('/:id', protectRoute, deletePost);
+
+router.get('/whoLiked/:id', whoIsLiked);
 
 
 export default router;

@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 
 import Post from '../models/post.model';
 import User from '../models/user.model';
-import { IPost, IUser } from '../types/types';
+import { ILikeData, IPost, IUser } from '../types/types';
 
 
 export const updatePost = async (req : Request, res : Response) => {
@@ -41,3 +41,55 @@ export const updatePost = async (req : Request, res : Response) => {
     }
 
 }
+
+export const deletePost = async (req : Request, res : Response) => {
+
+    try {
+        const {id: postId} = req.params;
+        const userId = req.user._id;
+        
+        const post = await Post.findById(postId);
+
+        if(post.author.toString() !== userId.toString()) return res.status(400).json({error : 'Cannot delete others post'});
+
+        await post.deleteOne();
+
+        res.status(200).json({message : 'Post has been deleted'});
+
+    } catch (error) {
+        
+        console.log('error in deletePost controller :', error);
+
+        res.status(500).json({error : 'Internal server error'});
+    }
+
+}
+
+export const whoIsLiked = async (req: Request, res: Response) => {
+    try {
+        const { id: postId } = req.params;
+
+        const post: IPost | null = await Post.findById(postId).select('likes').lean();
+
+        if (!post) {
+            return res.status(404).json({error: 'Post not found'});
+        }
+
+        const likedUsers: IUser[] = await User.find({ _id: { $in: post.likes } });
+
+        const mappedPost: ILikeData[] = likedUsers.map((user: IUser) => ({
+            _id: user._id,
+            fullName: user.fullName,
+            username: user.username,
+            profilePic: user.profilePic || ''
+        }));
+
+        res.status(200).json(mappedPost);
+
+    } catch (error) {
+
+        console.log('error in whoIsLiked controller :', error);
+
+        res.status(500).json({error: 'Internal server error'});
+    }
+};

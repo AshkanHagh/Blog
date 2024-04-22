@@ -1,7 +1,7 @@
-import mongoose from 'mongoose';
+import { Schema, model } from 'mongoose';
 import { IUser } from '../types/types';
 
-const userSchema = new mongoose.Schema<IUser>({
+const userSchema = new Schema<IUser>({
 
     fullName : {
         type : String,
@@ -34,18 +34,20 @@ const userSchema = new mongoose.Schema<IUser>({
         type : Boolean,
         default : false
     },
-    followers : {
-        type : [String],
+    followers : [{
+        type : Schema.Types.ObjectId,
+        ref : 'User',
         default : []
-    },
-    following : {
-        type : [String],
+    }],
+    following : [{
+        type : Schema.Types.ObjectId,
+        ref : 'User',
         default : []
-    }
+    }]
 
 }, {timestamps : true});
 
 
-const User = mongoose.model<IUser>('User', userSchema);
+const User = model<IUser>('User', userSchema);
 
 export default User;

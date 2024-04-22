@@ -1,5 +1,8 @@
 import { Router } from 'express';
-import { profile, login, logout, signup, updateProfile, searchUser, freezeAccount, follow } from '../controller/user.controller';
+
+import { profile, login, logout, signup, updateProfile, 
+    searchUser, freezeAccount, follow, followers, followings } from '../controller/user.controller';
+
 import protectRoute from '../middlewares/protectRoute';
 
 const router = Router();
@@ -19,6 +22,10 @@ router.get('/search/:query', searchUser);
 router.put('/freeze', protectRoute, freezeAccount);
 
 router.put('/follow/:id', protectRoute, follow);
+
+router.get('/followers/:id', followers);
+
+router.get('/followings/:id', followings);
 
 
 export default router;

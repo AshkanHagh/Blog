@@ -27,11 +27,18 @@ export interface IPost extends Document {
     imageUrl? : string
     author : ObjectId
     isPublish : boolean
-    likes : Object[]
+    likes : ObjectId[]
 }
 
 export interface IComment extends Document {
     senderId : ObjectId
     receiverId : ObjectId
     text : string
+}
+
+export interface ILikeData {
+    _id: ObjectId
+    fullName: string
+    username: string
+    profilePic: string
 }

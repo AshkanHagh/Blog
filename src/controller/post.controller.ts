@@ -13,11 +13,11 @@ export const addPost = async (req : Request, res : Response) => {
         const { imageUrl } = req.body;
         const userId : string = req.user._id;
 
-        const currentUser = await User.findById<IUser>(userId);
+        const currentUser : IUser | null = await User.findById(userId);
 
         if(!currentUser) return res.status(404).json({error : 'User not found'});
 
-        const post = new Post({
+        const post : IPost | null = new Post({
             title,
             description,
             author : currentUser._id
@@ -39,7 +39,7 @@ export const addPost = async (req : Request, res : Response) => {
 export const getPosts = async (req : Request, res : Response) => {
 
     try {
-        const posts = await Post.find<IPost>({
+        const posts : IPost[] = await Post.find({
             isPublish : true
         });
 
@@ -61,7 +61,7 @@ export const getSinglePost = async (req : Request, res : Response) => {
     try {
         const { id: postId } = req.params;
 
-        const post = await Post.findById(postId);
+        const post : IPost | null = await Post.findById(postId);
 
         if(!post) return res.status(404).json({error : 'Post not found'});
 
@@ -84,11 +84,45 @@ export const searchPost = async (req : Request, res : Response) => {
         const { query } = req.params;
         const userId : string = req.user._id;
 
-        const post = await Post.find({_id : {$ne : userId}, title : {$regex : query}});
+        const post : IPost[] | null = await Post.find({_id : {$ne : userId}, title : {$regex : query}});
 
         if(!post) return res.status(400).json({error : 'Posts not found'});
 
         res.status(200).json(post);
+
+    } catch (error) {
+        
+        console.log('error in searchPost controller :', error);
+
+        res.status(500).json({error : 'Internal server error'});
+    }
+
+}
+
+export const likePost = async (req : Request, res : Response) => {
+
+    try {
+        const { id: postId } = req.params;
+        const userId = req.user._id;
+
+        const post : IPost | null = await Post.findById(postId);
+
+        if(!post) return res.status(404).json({error : 'Post not found'});
+
+        const isLiked = post.likes.includes(userId);
+
+        if(isLiked) {
+
+            await Post.findByIdAndUpdate(postId, {$pull : {likes : userId}});
+
+            res.status(200).json({message : 'Post disliked'});
+
+        }else {
+
+            await Post.findByIdAndUpdate(postId, {$push : {likes : userId}});
+
+            res.status(200).json({message : 'Post liked'});
+        }
 
     } catch (error) {
         

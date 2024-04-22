@@ -191,3 +191,41 @@ export const freezeAccount = async (req : Request, res : Response) => {
     }
 
 }
+
+export const follow = async (req : Request, res : Response) => {
+
+    try {
+        const { id } = req.params;
+        const userId : string = req.user._id;
+
+        const userToModify = await User.findById(id);
+        const currentUser =  await User.findById(userId);
+
+        if(id === userId) return res.status(400).json({error : 'You cannot follow/unFollow your self'});
+        if(!userToModify || !currentUser) return res.status(404).json({error : 'User not found'});
+
+        const isFollowing = currentUser.following.includes(id);
+
+        if(isFollowing) {
+            // unFollow
+            await User.findByIdAndUpdate(req.user._id, {$pull : {following : id}});
+            await User.findByIdAndUpdate(id, {$pull : {followers : req.user._id}});
+
+            res.status(200).json({message : 'User unFollowed successfully'});
+
+        }else {
+            // follow
+            await User.findByIdAndUpdate(req.user._id, {$push : {following : id}});
+            await User.findByIdAndUpdate(id, {$push : {followers : req.user._id}});
+
+            res.status(200).json({message : 'User followed successfully'});
+        }
+
+    } catch (error) {
+        
+        console.log('error in follow controller :', error);
+
+        res.status(500).json({error : 'Internal server error'});
+    }
+
+}

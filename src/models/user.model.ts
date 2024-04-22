@@ -33,6 +33,14 @@ const userSchema = new mongoose.Schema<IUser>({
     isFreeze : {
         type : Boolean,
         default : false
+    },
+    followers : {
+        type : [String],
+        default : []
+    },
+    following : {
+        type : [String],
+        default : []
     }
 
 }, {timestamps : true});

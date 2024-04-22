@@ -1,33 +1,27 @@
-# A Blog REST API With [Node](https://nodejs.org/), [Express](https://expressjs.com/), [MongoDB](https://www.mongodb.com/)
+# Updating
 
-<img src="image/blog.png" max-width="100%"/>
+<!-- <img src="" max-width="100%"/> -->
 
 Features :
 
-* JsonWebToken  based Authentication
-* User Profile Panel,
-* Posts Comments
-* Likes & dislike functionality
-* Postman testing
+* Updating
 
 ### Description
 
-A rest api I created to level up my skills
+Updating
 
 ### Install packages
 ```
-npm i
+Updating
 ```
 ### Setup .env file
 ``` javascript
-MONGODB_URL = 
-PORT = 
-JWT_SECRET =
+Updating
 ```
 
 ### Start the app
 ```
-npm run dev
+Updating
 ```
 
 <i>Ashkan<i>

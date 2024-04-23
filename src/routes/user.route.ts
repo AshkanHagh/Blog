@@ -1,7 +1,7 @@
 import { Router } from 'express';
 
-import { profile, login, logout, signup, updateProfile, 
-    searchUser, freezeAccount, follow, followers, followings } from '../controller/user.controller';
+import { profile, login, logout, signup, updateProfile, searchUser, freezeAccount, follow, followers, followings, 
+getMyPosts} from '../controller/user.controller';
 
 import protectRoute from '../middlewares/protectRoute';
 
@@ -26,6 +26,8 @@ router.put('/follow/:id', protectRoute, follow);
 router.get('/followers/:id', followers);
 
 router.get('/followings/:id', followings);
+
+router.get('/posts', protectRoute, getMyPosts);
 
 
 export default router;

@@ -4,7 +4,8 @@ import generateTokenAndSetCookie from '../utils/generateToken';
 import mongoose from 'mongoose';
 
 import User from '../models/user.model';
-import { IUser } from '../types/types';
+import { IPost, IUser } from '../types/types';
+import Post from '../models/post.model';
 
 
 export const signup = async (req : Request, res : Response) => {
@@ -287,6 +288,26 @@ export const followings = async (req : Request, res : Response) => {
     } catch (error) {
         
         console.log('error in followers controller :', error);
+
+        res.status(500).json({error : 'Internal server error'});
+    }
+
+}
+
+export const getMyPosts = async (req : Request, res : Response) => {
+
+    try {
+        const userId : string = req.user._id;
+
+        const post : IPost[] = await Post.find({author : userId}).select('-updatedAt');
+
+        if(!post) return res.status(404).json({error : 'Post not found'});
+
+        res.status(200).json(post);
+
+    } catch (error) {
+        
+        console.log('error in getMyPosts controller :', error);
 
         res.status(500).json({error : 'Internal server error'});
     }

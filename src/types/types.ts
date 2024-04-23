@@ -32,8 +32,9 @@ export interface IPost extends Document {
 
 export interface IComment extends Document {
     senderId : ObjectId
-    receiverId : ObjectId
+    receiverPostId : ObjectId
     text : string
+    replay : ObjectId[]
 }
 
 export interface ILikeData {
@@ -41,4 +42,11 @@ export interface ILikeData {
     fullName: string
     username: string
     profilePic: string
+}
+
+export interface IReplay extends Document {
+    senderId : ObjectId
+    receiverCommentId : ObjectId
+    text : string
+    commentId : ObjectId[]
 }

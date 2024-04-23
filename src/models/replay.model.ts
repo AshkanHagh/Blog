@@ -1,30 +1,30 @@
 import { Schema, model } from 'mongoose';
-import { IComment } from '../types/types';
+import { IReplay } from '../types/types';
 
-const commentSchema = new Schema<IComment>({
+const replaySchema = new Schema<IReplay>({
 
     senderId : {
         type : Schema.Types.ObjectId,
         ref : 'User',
         required : true
     },
-    receiverPostId : {
+    receiverCommentId : {
         type : Schema.Types.ObjectId,
-        ref : 'Post',
+        ref : 'Comment',
         required : true
     },
     text : {
         type : String,
         required : true
     },
-    replay : [{
+    commentId : [{
         type : Schema.Types.ObjectId,
-        ref : 'Replay'
+        ref : 'Comment'
     }]
 
 }, {timestamps : true});
 
 
-const Comment = model<IComment>('Comment', commentSchema);
+const Replay = model<IReplay>('Replay', replaySchema);
 
-export default Comment;
+export default Replay;

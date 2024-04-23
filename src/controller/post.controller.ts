@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
 
 import Post from '../models/post.model';
-import Comment from '../models/comment.model';
 import User from '../models/user.model';
 import { IPost, IUser } from '../types/types';
 

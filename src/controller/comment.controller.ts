@@ -22,6 +22,8 @@ export const addComment = async (req : Request, res : Response) => {
 
         if(!post) return res.status(404).json({error : 'Post not found'});
 
+        if(post.isPublish == false) return res.status(400).json({error : 'This Post is not publish'});
+
         const newComment : IComment | null = new Comment({
 
             senderId : user._id,
@@ -52,6 +54,8 @@ export const deleteComment = async (req : Request, res : Response) => {
 
         if(currentUser.toString() !== comment.senderId.toString()) return res.status(400).json({error : 'Cannot delete others comment'});
 
+        await Replay.deleteMany({commentId : {$in : comment._id}});
+
         await comment.deleteOne();
 
         res.status(200).json({message : 'Comment deleted'});
@@ -71,7 +75,7 @@ export const getComments = async (req : Request, res : Response) => {
         const { id: postId } = req.params;
 
         const comment : IComment[] = await Comment.find({receiverPostId : postId}).populate('senderId', 'fullName username profilePic').
-        select(' -updatedAt');
+        select(' -updatedAt -replay');
 
         if(!comment) return res.status(404).json({error : 'Comment not found'});
 
@@ -130,11 +134,11 @@ export const replay = async (req : Request, res : Response) => {
         const replay : IReplay | null = new Replay({
 
             senderId : currentUser,
-            receiverCommentId : commentId,
+            commentId : commentId,
+            postId : comment.receiverPostId,
             text
         });
 
-        replay.commentId.push(comment._id);
         comment.replay.push(replay._id);
 
         await Promise.all([comment.save(), replay.save()]);
@@ -168,6 +172,39 @@ export const getReplays = async (req : Request, res : Response) => {
     } catch (error) {
         
         console.log('error in getReplays controller :', error);
+
+        res.status(500).json({error : 'Internal server error'});
+    }
+
+}
+
+export const likeComment = async (req : Request, res : Response) => {
+
+    try {
+        const { id: commentId } = req.params;
+        const currentUser = req.user._id;
+
+        const comment : IComment | null = await Comment.findById(commentId);
+
+        if(!comment) return res.status(404).json({error : 'Comment not found'});
+
+        const isLiked = comment.likes.includes(currentUser);
+
+        if(isLiked) {
+
+            await Comment.findByIdAndUpdate(commentId, {$pull : {likes : currentUser}});
+
+            res.status(200).json({message : 'Comment disLiked'});
+        }else {
+
+            await Comment.findByIdAndUpdate(commentId, {$push : {likes : currentUser}});
+
+            res.status(200).json({message : 'Comment liked'});
+        }
+        
+    } catch (error) {
+        
+        console.log('error in likeComment controller :', error);
 
         res.status(500).json({error : 'Internal server error'});
     }

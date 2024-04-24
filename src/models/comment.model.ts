@@ -20,6 +20,10 @@ const commentSchema = new Schema<IComment>({
     replay : [{
         type : Schema.Types.ObjectId,
         ref : 'Replay'
+    }],
+    likes : [{
+        type : Schema.Types.ObjectId,
+        ref : 'User'
     }]
 
 }, {timestamps : true});

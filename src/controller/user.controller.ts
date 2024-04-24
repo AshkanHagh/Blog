@@ -251,7 +251,7 @@ export const followers = async (req: Request, res: Response) => {
             profilePic: follower.profilePic
         }));
 
-        res.send(mappedFollowers);
+        res.status(200).json(mappedFollowers);
 
     } catch (error) {
 

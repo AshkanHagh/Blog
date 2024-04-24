@@ -8,19 +8,20 @@ const replaySchema = new Schema<IReplay>({
         ref : 'User',
         required : true
     },
-    receiverCommentId : {
+    commentId : {
         type : Schema.Types.ObjectId,
         ref : 'Comment',
+        required : true
+    },
+    postId : {
+        type : Schema.Types.ObjectId,
+        ref : 'Post',
         required : true
     },
     text : {
         type : String,
         required : true
-    },
-    commentId : [{
-        type : Schema.Types.ObjectId,
-        ref : 'Comment'
-    }]
+    }
 
 }, {timestamps : true});
 

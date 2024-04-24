@@ -2,6 +2,8 @@ import { Request, Response } from 'express';
 
 import Post from '../models/post.model';
 import User from '../models/user.model';
+import Comment from '../models/comment.model';
+import Replay from '../models/replay.model';
 import { ILikeData, IPost, IUser } from '../types/types';
 
 
@@ -14,11 +16,11 @@ export const updatePost = async (req : Request, res : Response) => {
         const userId : string = req.user._id;
         const { id: postId } = req.params;
         
-        const currentUser = await User.findById<IUser>(userId);
+        const currentUser : IUser | null = await User.findById(userId);
 
         if(!currentUser) return res.status(404).json({error : 'User not found'});
 
-        const post = await Post.findById<IPost>(postId);
+        const post : IPost | null = await Post.findById(postId);
 
         if(!post) return res.status(404).json({error : 'Post not found'});
 
@@ -28,6 +30,7 @@ export const updatePost = async (req : Request, res : Response) => {
 
         post.title = title || post.title;
         post.description = description || post.description;
+        post.imageUrl = imageUrl || post.imageUrl
 
         await post.save();
 
@@ -48,9 +51,14 @@ export const deletePost = async (req : Request, res : Response) => {
         const {id: postId} = req.params;
         const userId = req.user._id;
         
-        const post = await Post.findById(postId);
+        const post : IPost | null = await Post.findById(postId);
+
+        if(!post) return res.status(404).json({error : 'Post not found'});
 
         if(post.author.toString() !== userId.toString()) return res.status(400).json({error : 'Cannot delete others post'});
+
+        await Comment.deleteMany({receiverPostId : post._id});
+        await Replay.deleteMany({postId : post._id});
 
         await post.deleteOne();
 

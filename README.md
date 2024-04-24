@@ -1,27 +1,37 @@
-# Updating
+# Blog REST API With [Bun](https://bun.sh/), [Express](https://expressjs.com/), [MongoDB](https://www.mongodb.com/)
 
-<!-- <img src="" max-width="100%"/> -->
+<img src="src/image//blog.png" max-width="100%"/>
 
 Features :
 
-* Updating
+* JsonWebToken based Authentication
+* Create/edit/delete Post
+* Get/search Post
+* Like/disLike Post
+* Add/get/edit/delete/like/replay Comment
+* Get/edit/freeze/search Profile
+* Follow/unFollow User
+* Get followers/followings
 
 ### Description
-
-Updating
+Blog REST API that use bun, typescript 
 
 ### Install packages
-```
-Updating
+```bash
+npm install -g bun
+bun install
 ```
 ### Setup .env file
-``` javascript
-Updating
+``` typescript
+PORT=
+DATABASE_URL=
+JWT_SECRET=
+NODE_ENV=
 ```
 
 ### Start the app
 ```
-Updating
+bun run dev
 ```
 
 <i>Ashkan<i>

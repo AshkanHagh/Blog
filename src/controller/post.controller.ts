@@ -3,6 +3,7 @@ import { Request, Response } from 'express';
 import Post from '../models/post.model';
 import User from '../models/user.model';
 import { IPost, IUser } from '../types/types';
+import { validatePost } from '../utils/validator';
 
 
 export const addPost = async (req : Request, res : Response) => {
@@ -11,6 +12,10 @@ export const addPost = async (req : Request, res : Response) => {
         const { title, description } = req.body;
         const { imageUrl } = req.body;
         const userId : string = req.user._id;
+
+        const { error, value } = validatePost(req.body);
+
+        if(error) return res.status(400).json({error : error.message});
 
         const currentUser : IUser | null = await User.findById(userId);
 

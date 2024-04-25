@@ -5,6 +5,7 @@ import User from '../models/user.model';
 import Comment from '../models/comment.model';
 import Replay from '../models/replay.model';
 import { ILikeData, IPost, IUser } from '../types/types';
+import { validatePostUpdate } from '../utils/validator';
 
 
 export const updatePost = async (req : Request, res : Response) => {
@@ -12,6 +13,10 @@ export const updatePost = async (req : Request, res : Response) => {
     try {
         const { title, description, isPublish } = req.body;
         const { imageUrl } = req.body;
+
+        const { error, value } = validatePostUpdate(req.body);
+
+        if(error) return res.status(400).json({error : error.message});
 
         const userId : string = req.user._id;
         const { id: postId } = req.params;

@@ -16,7 +16,6 @@ const replaySchema = new Schema<IReplay>({
     postId : {
         type : Schema.Types.ObjectId,
         ref : 'Post',
-        required : true
     },
     text : {
         type : String,

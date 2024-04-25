@@ -119,51 +119,52 @@ export const editComment = async (req : Request, res : Response) => {
 
 }
 
-export const replay = async (req : Request, res : Response) => {
-
+export const replay = async (req: Request, res: Response) => {
     try {
         const { text } = req.body;
-
         const { id: commentId } = req.params;
         const currentUser = req.user._id;
 
-        const comment : IComment = await Comment.findById(commentId);
+        const replay: IReplay | null = await Replay.create({
 
-        if(!comment) return res.status(404).json({error : 'Comment not found'});
-
-        const replay : IReplay | null = new Replay({
-
-            senderId : currentUser,
-            commentId : commentId,
-            postId : comment.receiverPostId,
+            senderId: currentUser,
+            commentId: commentId,
+            postId: null,
             text
         });
 
-        comment.replay.push(replay._id);
+        const updatedComment = await Comment.findByIdAndUpdate(commentId, {
 
-        await Promise.all([comment.save(), replay.save()]);
+            $push: { replay: replay._id }
+        }, { new: true });
+
+        if (!updatedComment) {
+
+            await Replay.findByIdAndDelete(replay._id);
+
+            return res.status(404).json({ error: 'Comment not found' });
+        }
+
+        replay.postId = updatedComment.receiverPostId;
+        
+        await replay.save();
 
         res.status(200).json(replay);
 
     } catch (error) {
-        
-        console.log('error in replay controller :', error);
 
-        res.status(500).json({error : 'Internal server error'});
+        console.log('error in replay controller:', error);
+
+        res.status(500).json({ error: 'Internal server error' });
     }
-
 }
 
 export const getReplays = async (req : Request, res : Response) => {
 
     try {
-        const { id: commentId } = req.params;
+        const { id } = req.params;
 
-        const comment : IComment = await Comment.findById(commentId);
-
-        if(!comment) return res.status(404).json({error : 'Replay not found'});
-
-        const replay : IReplay[] = await Replay.find({commentId : {$in : comment._id}}).sort({createdAt : -1});
+        const replay : IReplay[] = await Replay.find({commentId : id}).sort({createdAt : -1});
 
         if(!replay) return res.status(404).json({error : 'Replay not found'});
 

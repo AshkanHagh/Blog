@@ -1,7 +1,7 @@
 import { Router } from 'express';
 
-import { profile, login, logout, signup, updateProfile, searchUser, freezeAccount, follow, followers, followings, 
-getMyPosts} from '../controller/user.controller';
+import { profile, login, logout, signup, updateProfile } from '../controller/user.controller';
+import { searchUser, freezeAccount, follow, followers, followings, getMyPosts } from '../controller/user2.controller';
 
 import protectRoute from '../middlewares/protectRoute'; // middleware for check jwt token and set req.user
 

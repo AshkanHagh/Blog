@@ -1,6 +1,6 @@
 # Blog REST API With [Bun](https://bun.sh/), [Express](https://expressjs.com/), [MongoDB](https://www.mongodb.com/)
 
-<img src="src/image//blog.png" max-width="100%"/>
+<img src="image//blog.png" max-width="100%"/>
 
 Features :
 

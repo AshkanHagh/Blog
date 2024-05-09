@@ -1,8 +1,8 @@
-import { Request, Response } from "express";
+import type { Request, Response } from "express";
 
 import User from "../models/user.model";
 import Post from "../models/post.model";
-import { IComment, IPost, IReplay, IUser } from "../types/types";
+import type  { IComment, IPost, IReplay, IUser } from "../types/types";
 import Comment from "../models/comment.model";
 import Replay from "../models/replay.model";
 

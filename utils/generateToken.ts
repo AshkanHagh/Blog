@@ -1,4 +1,4 @@
-import { Response } from 'express';
+import type { Response } from 'express';
 import jwt from 'jsonwebtoken';
 
 const generateTokenAndSetCookie = (userId : string, res : Response) => {

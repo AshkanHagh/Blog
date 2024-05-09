@@ -1,7 +1,7 @@
-import jwt, { JwtPayload } from 'jsonwebtoken';
+import jwt, {type JwtPayload } from 'jsonwebtoken';
 import User from '../models/user.model';
-import { Request, Response, NextFunction } from 'express';
-import { IUser } from '../types/types';
+import type { Request, Response, NextFunction } from 'express';
+import type { IUser } from '../types/types';
 
 
 const protectRoute = async (req : Request, res : Response, next : NextFunction) => {

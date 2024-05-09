@@ -1,9 +1,9 @@
-import { Request, Response } from 'express';
+import type { Request, Response } from 'express';
 import mongoose from 'mongoose';
 
 import User from '../models/user.model';
 import Post from '../models/post.model';
-import { IPost, IUser } from '../types/types';
+import type { IPost, IUser } from '../types/types';
 
 
 export const searchUser = async (req : Request, res : Response) => {

@@ -1,10 +1,10 @@
-import { Request, Response } from 'express';
+import type { Request, Response } from 'express';
 
 import Post from '../models/post.model';
 import User from '../models/user.model';
 import Comment from '../models/comment.model';
 import Replay from '../models/replay.model';
-import { ILikeData, IPost, IUser } from '../types/types';
+import type { ILikeData, IPost, IUser } from '../types/types';
 import { validatePostUpdate } from '../utils/validator';
 
 

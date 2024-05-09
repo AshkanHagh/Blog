@@ -1,5 +1,5 @@
 import { Schema, model } from 'mongoose';
-import { IComment } from '../types/types';
+import type { IComment } from '../types/types';
 
 const commentSchema = new Schema<IComment>({
 

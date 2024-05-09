@@ -1,9 +1,10 @@
 {
   "name": "express-blog",
   "module": "app.ts",
+  "type": "module",
   "scripts": {
-    "dev": "bun --watch src/app.ts",
-    "start": "bun src/app.ts"
+    "dev": "bun --watch app.ts",
+    "start": "bun app.ts"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",

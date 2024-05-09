@@ -1,8 +1,8 @@
-import { Request, Response } from 'express';
+import type { Request, Response } from 'express';
 
 import Post from '../models/post.model';
 import User from '../models/user.model';
-import { IPost, IUser } from '../types/types';
+import type { IPost, IUser } from '../types/types';
 import { validatePost } from '../utils/validator';
 
 

@@ -1,5 +1,5 @@
 import { Schema, model } from 'mongoose';
-import { IReplay } from '../types/types';
+import type { IReplay } from '../types/types';
 
 const replaySchema = new Schema<IReplay>({
 

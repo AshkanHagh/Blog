@@ -1,10 +1,10 @@
-import { Request, Response } from 'express';
+import type { Request, Response } from 'express';
 import { validateSignup } from '../utils/validator';
 import bcrypt from 'bcrypt';
 import generateTokenAndSetCookie from '../utils/generateToken';
 
 import User from '../models/user.model';
-import { IUser } from '../types/types';
+import type { IUser } from '../types/types';
 
 
 export const signup = async (req : Request, res : Response) => {
